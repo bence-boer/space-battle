@@ -25,17 +25,17 @@ class BulletController{
 }
 
 
-class Bullet{
+class Bullet extends Entity{
   PImage bullet;
-  float vx, vy;
   int damage;
   
-  Bullet(PVector pos, PVector vel, int damage){
+  Bullet(float xCoordinate, float yCoordinate, float xVelocity, float yVelocity, int damage){
+    super(xCoordinate, yCoordinate, unit, unit);
     this.bullet = projectiles.playerBullet;
-    this.xCoordinate = pos.xCoordinate;
-    this.y = pos.y;
-    this.vx = vel.x;
-    this.vy = vel.y;
+    this.xCoordinate = xCoordinate;
+    this.yCoordinate = yCoordinate;
+    this.xVelocity = xVelocity;
+    this.yVelocity = yVelocity;
     this.damage = damage;
   }
   
@@ -45,28 +45,29 @@ class Bullet{
   }
   
   void move(){
-    x += vx;
-    y += vy;
+    xCoordinate += xVelocity;
+    yCoordinate += yVelocity;
     if(isOut()) projectiles.bullets.remove(this);
   }
   
   void display(){
-    image(bullet, x, y, unit, unit);
+    image(bullet, xCoordinate, yCoordinate, unit, unit);
   }
   
   boolean isOut(){
-    return y < -unit || y > height+unit;
+    return yCoordinate < -unit || yCoordinate > height + unit;
   }
 }
 
 class EnemyBullet extends Bullet{
   
-  EnemyBullet(PVector pos, PVector vel, int damage){
-    super(pos, vel, damage);
-    bullet = projectiles.enemyBullet;
+  EnemyBullet(float xCoordinate, float yCoordinate, float xVelocity, float yVelocity, int damage){
+    super(xCoordinate, yCoordinate, xVelocity, yVelocity, damage);
+    this.bullet = projectiles.enemyBullet;
   }
   
   boolean hit(Spacecraft p){
-    return y > p.y - unit/2 && y < p.y + unit/2 && x > p.x - unit/2 && x < p.x + unit/2;     
+    return yCoordinate > p.yCoordinate - unit / 2 && yCoordinate < p.yCoordinate + unit / 2 &&
+           xCoordinate > p.xCoordinate - unit / 2 && xCoordinate < p.xCoordinate + unit / 2;     
   }
 }

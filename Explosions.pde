@@ -5,8 +5,8 @@ class ExplosionController{
     explosions = new LinkedList<Explosion>();
   }
   
-  void addExplosion(PVector coordinates){
-    explosions.add(new Explosion(coordinates));
+  void addExplosion(float xCoordinate, float yCoordinate){
+    explosions.add(new Explosion(xCoordinate, yCoordinate));
   }
   
   void damage(){
@@ -25,35 +25,34 @@ class ExplosionController{
   }
 }
 
-class Explosion{
-  float x, y;
+class Explosion extends Entity{
   int phase;
   
   PImage phase01 = loadImage("blast01.png");
   PImage phase02 = loadImage("blast02.png");
   PImage phase03 = loadImage("blast03.png");
   
-  Explosion(PVector pos){
-    x = pos.x;
-    y = pos.y;
+  Explosion(float xCoordinate, float yCoordinate){
+    super(xCoordinate, yCoordinate);
     phase = 1;
   }
   
   void display(){
     if(phase <= 2){
-      image(phase01, x, y, unit, unit);
+      image(phase01, xCoordinate, yCoordinate, unit, unit);
     }
     else if(phase <= 4){
-      image(phase02, x, y, unit, unit);
+      image(phase02, xCoordinate, yCoordinate, unit, unit);
     }
     else if(phase <= 6){
-      image(phase03, x, y, unit, unit);
+      image(phase03, xCoordinate, yCoordinate, unit, unit);
     }
     
     phase++;
   }
   
   boolean hitPlayer(){
-    return x > player.x-unit/2 && x < player.x+unit/2 && y > player.y-unit/2 && y < player.y+unit/2;
+    return xCoordinate > player.xCoordinate - unit / 2 && xCoordinate < player.xCoordinate + unit / 2 &&
+           yCoordinate > player.yCoordinate - unit / 2 && yCoordinate < player.yCoordinate + unit / 2;
   }
 }

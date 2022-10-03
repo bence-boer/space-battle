@@ -27,7 +27,7 @@ void setup(){
   textSize(70);
   textAlign(LEFT, CENTER);
   // vibratorSetup();
-    
+    Window.initialize(width, height);
   frameCount = 0;
   unit = width/6;
   scoreboard.score = 0;
@@ -46,7 +46,7 @@ void setup(){
   for(int i = 0; i < 50; i++){
     stars.add(new PVector(random(0, width), random(0, height)));
   }
-  backgroundOffset = scoreboard.pos;
+  backgroundOffset = scoreboard.offset;
 }
 
 void draw(){
@@ -138,7 +138,7 @@ void touchStarted(){
 public enum Input{
   LEFT, RIGHT, UP, DOWN, SHOOT;
 
-  public boolean isPressed(){
+  public static boolean isPressed(int key, int keyCode){
     switch(this){
       case LEFT:
         return key == 'a' || key == 'A' || key == CODED && keyCode == LEFT;
@@ -173,14 +173,14 @@ public enum Input{
   }
 }
 
-public class Window{
-  public static final float WIDTH;
-  public static final float HEIGHT;
-  public static final float UNIT;
-  public static final float CENTER_X;
-  public static final float CENTER_Y;
+public static class Window{
+  public static float WIDTH;
+  public static float HEIGHT;
+  public static float UNIT;
+  public static float CENTER_X;
+  public static float CENTER_Y;
 
-  public Window(float width, float height){
+  public static void initialize(float width, float height){
     WIDTH = width;
     HEIGHT = height;
     UNIT = width/6;

@@ -1,7 +1,6 @@
-class Spacecraft{
+class Spacecraft extends Entity{
   PImage ship = loadImage("ship.png");
   PImage[] healthBar = new PImage[4];
-  float xCoordinate, yCoordinate;
   int hp;
   int bulletDamage;
   int prevHp;
@@ -9,11 +8,10 @@ class Spacecraft{
   int shootingFrequency;
   
   Spacecraft(float xCoordinate, float yCoordinate){
+    super(xCoordinate, yCoordinate);
     for(int i = 0; i < healthBar.length; i++){
       healthBar[i] = loadImage("healthbar0"+(i+1)+".png");
     }
-    this.xCoordinate = xCoordinate;
-    this.yCoordinate = yCoordinate;
     this.hp = 0;
     this.bulletDamage = 1;
     this.cannonLevel = 1;
@@ -24,8 +22,8 @@ class Spacecraft{
     float newX = xCoordinate + deltaX;
     float newY = yCoordinate + deltaY;
     
-    x = constrain(newX, unit/2, width-unit/2);
-    y = constrain(newY, unit, height-unit/2);
+    xCoordinate = constrain(newX, unit/2, width-unit/2);
+    yCoordinate = constrain(newY, unit, height-unit/2);
   }
   
   void display(){
@@ -56,11 +54,12 @@ class Spacecraft{
   
   void testIfHit(){
     for(int i = 0; i < enemies.ships.size(); i++){
-      if(collidedWith(enemies.ships.get(i))){
+      OpponentController.Opponent enemy = enemies.ships.get(i);
+      if(collidedWith(enemy)){
         hp--;
         // vibrator.vibrate(vEffect);
-        explosions.addExplosion(enemies.ships.get(i).pos);
-        enemies.ships.remove(i);
+        explosions.addExplosion(enemy.xCoordinate, enemy.yCoordinate);
+        enemies.ships.remove(enemy);
       }
     }
     
@@ -74,8 +73,8 @@ class Spacecraft{
   }
   
   boolean collidedWith(OpponentController.Opponent o){
-    if(o.pos.xCoordinate + unit / 2 > xCoordinate - unit / 2 && o.pos.xCoordinate - unit / 2 < xCoordinate + unit / 2 &&
-       o.pos.yCoordinate + unit / 2 > yCoordinate - unit / 2 && o.pos.yCoordinate - unit / 2 < yCoordinate + unit / 2){
+    if(o.xCoordinate + unit / 2 > xCoordinate - unit / 2 && o.xCoordinate - unit / 2 < xCoordinate + unit / 2 &&
+       o.yCoordinate + unit / 2 > yCoordinate - unit / 2 && o.yCoordinate - unit / 2 < yCoordinate + unit / 2){
          return true;
        }
     return false;
@@ -84,7 +83,7 @@ class Spacecraft{
   void shoot(){
     switch(cannonLevel){
       case 1:
-      Bullet b1 = new Bullet(new PVector(xCoordinate, player.yCoordinate - unit / 4), projectiles.startVelocity, bulletDamage);
+      Bullet b1 = new Bullet(xCoordinate, player.yCoordinate - unit / 4, projectiles.startVelocity.x, projectiles.startVelocity.y, bulletDamage);
       
       projectiles.bullets.add(b1);
       projectiles.playerBullets.add(b1);
