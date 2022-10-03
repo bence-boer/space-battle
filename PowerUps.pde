@@ -2,14 +2,14 @@ class PowerUpController{
   ArrayList<hpBoost> hpBoosts;
   ArrayList<BlastWave> blastWaves;
   ArrayList<Cannon> cannons;
-  float startVel;
+  float startVelocity;
   float maxRadius;
   
   PowerUpController(){
     hpBoosts = new ArrayList<hpBoost>();
     blastWaves = new ArrayList<BlastWave>();
     cannons = new ArrayList<Cannon>();
-    startVel = enemies.startVel;
+    startVelocity = enemies.startVelocity;
     maxRadius = height/3;
   }
   
@@ -20,15 +20,15 @@ class PowerUpController{
     else if(player.hp < 4) which = (int) random(0,2);
     switch(which){
       case 0:
-      blastWaves.add(new BlastWave(startPos, new PVector (0, startVel)));
+      blastWaves.add(new BlastWave(startPos, new PVector (0, startVelocity)));
       break;
       
       case 1:
-      hpBoosts.add(new hpBoost(startPos, new PVector (0, startVel)));
+      hpBoosts.add(new hpBoost(startPos, new PVector (0, startVelocity)));
       break;
       
       case 2:
-      cannons.add(new Cannon(startPos, new PVector (0, startVel)));
+      cannons.add(new Cannon(startPos, new PVector (0, startVelocity)));
       break;
       
       default:
@@ -52,7 +52,7 @@ class PowerUpController{
       blastWaves.get(i).pos.add(blastWaves.get(i).vel);
       if(blastWaves.get(i).pos.y > height+unit/2 || blastWaves.get(i).pos.y < -unit/2) blastWaves.remove(i);
       else if(blastWaves.get(i).pos.x > player.x-unit/2 && blastWaves.get(i).pos.x < player.x+unit/2 && blastWaves.get(i).pos.y > player.y-unit/2 && blastWaves.get(i).pos.y < player.y+unit/2){
-        blastWaves.get(i).vel.y = -startVel;
+        blastWaves.get(i).vel.y = -startVelocity;
         blastWaves.get(i).detonated = true;
       }
     }

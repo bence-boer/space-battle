@@ -5,8 +5,8 @@ class AlienController{
     aliens = new ArrayList<Alien>();
   }
   
-  void addAlien(PVector coord){
-  aliens.add(new Alien(coord));
+  void addAlien(PVector coordinates){
+  aliens.add(new Alien(coordinates));
   }
   
   void display(){

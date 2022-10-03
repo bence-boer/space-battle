@@ -8,10 +8,10 @@ PowerUpController powerUps;
 ExplosionController explosions;
 AlienController aliens;
 LinkedList <PVector> stars;
-float bgPos;
+float backgroundOffset;
 float unit;
 boolean mp;
-PImage bg;
+PImage backgroundImage;
 
 void setup(){
   // fullScreen(P2D);
@@ -33,8 +33,8 @@ void setup(){
   scoreboard.score = 0;
   stars = new LinkedList<PVector>();
   mp = false;
-  //bg = loadImage("background0"+((int)random(4)+1)+".png");
-  bg = loadImage("background04.png");
+  //backgroundImage = loadImage("background0"+((int)random(4)+1)+".png");
+  backgroundImage = loadImage("background04.png");
   
   player = new Spacecraft(width/2, height-unit);
   projectiles = new BulletController();
@@ -46,7 +46,7 @@ void setup(){
   for(int i = 0; i < 50; i++){
     stars.add(new PVector(random(0, width), random(0, height)));
   }
-  bgPos = scoreboard.pos;
+  backgroundOffset = scoreboard.pos;
 }
 
 void draw(){
@@ -79,10 +79,10 @@ void draw(){
 }
 
 void spaceBackground(){
-  bgPos += height/130;
-  if(bgPos > height*2.5) bgPos = -height/2;
-  image(bg, width/2, bgPos + height/2, width, height*3);
-  if(bgPos > height) image(bg, width/2, bgPos - height*2.5, width, height*3);
+  backgroundOffset += height/130;
+  if(backgroundOffset > height*2.5) backgroundOffset = -height/2;
+  image(backgroundImage, width/2, backgroundOffset + height/2, width, height*3);
+  if(backgroundOffset > height) image(backgroundImage, width/2, backgroundOffset - height*2.5, width, height*3);
   background(0,150);
   
   if(frameCount % 2 == 0){
@@ -133,4 +133,58 @@ void touchStarted(){
     //player.upgrade();
     scoreboard.score += 10;
   }*/
+}
+
+public enum Input{
+  LEFT, RIGHT, UP, DOWN, SHOOT;
+
+  public boolean isPressed(){
+    switch(this){
+      case LEFT:
+        return key == 'a' || key == 'A' || key == CODED && keyCode == LEFT;
+      case RIGHT:
+        return key == 'd' || key == 'D' || key == CODED && keyCode == RIGHT;
+      case UP:
+        return key == 'w' || key == 'W' || key == CODED && keyCode == UP;
+      case DOWN:
+        return key == 's' || key == 'S' || key == CODED && keyCode == DOWN;
+      case SHOOT:
+        return key == ' ' || key == ' ' || key == CODED && keyCode == SHIFT;
+      default:
+        return false;
+    }
+  }
+
+  public boolean isReleased(){
+    switch(this){
+      case LEFT:
+        return key != 'a' && key != 'A' && key != CODED && keyCode != LEFT;
+      case RIGHT:
+        return key != 'd' && key != 'D' && key != CODED && keyCode != RIGHT;
+      case UP:
+        return key != 'w' && key != 'W' && key != CODED && keyCode != UP;
+      case DOWN:
+        return key != 's' && key != 'S' && key != CODED && keyCode != DOWN;
+      case SHOOT:
+        return key != ' ' && key != ' ' && key != CODED && keyCode != SHIFT;
+      default:
+        return false;
+    }
+  }
+}
+
+public class Window{
+  public static final float WIDTH;
+  public static final float HEIGHT;
+  public static final float UNIT;
+  public static final float CENTER_X;
+  public static final float CENTER_Y;
+
+  public Window(float width, float height){
+    WIDTH = width;
+    HEIGHT = height;
+    UNIT = width/6;
+    CENTER_X = width/2;
+    CENTER_Y = height/2;
+  }
 }

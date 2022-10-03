@@ -1,12 +1,12 @@
 class ExplosionController{
-  ArrayList<Explosion> explosions;
+  LinkedList<Explosion> explosions;
   
   ExplosionController(){
-    explosions = new ArrayList<Explosion>();
+    explosions = new LinkedList<Explosion>();
   }
   
-  void addExplosion(PVector coord){
-    explosions.add(new Explosion(coord));
+  void addExplosion(PVector coordinates){
+    explosions.add(new Explosion(coordinates));
   }
   
   void damage(){

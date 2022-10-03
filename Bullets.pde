@@ -1,17 +1,17 @@
 class BulletController{
-  ArrayList<Bullet> bullets;
-  ArrayList<Bullet> playerBullets;
-  ArrayList<EnemyBullet> enemyBullets;
-  PVector startVel;
+  LinkedList<Bullet> bullets;
+  LinkedList<Bullet> playerBullets;
+  LinkedList<EnemyBullet> enemyBullets;
+  PVector startVelocity;
   
   PImage playerBullet;
   PImage enemyBullet;
   
   BulletController(){
-    bullets = new ArrayList<Bullet>();
-    playerBullets = new ArrayList<Bullet>();
-    enemyBullets = new ArrayList<EnemyBullet>();
-    startVel = new PVector(0, -height/40);
+    bullets = new LinkedList<Bullet>();
+    playerBullets = new LinkedList<Bullet>();
+    enemyBullets = new LinkedList<EnemyBullet>();
+    startVelocity = new PVector(0, -height/40);
     
     playerBullet = loadImage("bullet.png");
     enemyBullet = loadImage("v02bullet.png");
@@ -25,14 +25,14 @@ class BulletController{
 }
 
 
-class Bullet extends PVector{
+class Bullet{
   PImage bullet;
   float vx, vy;
   int damage;
   
   Bullet(PVector pos, PVector vel, int damage){
     this.bullet = projectiles.playerBullet;
-    this.x = pos.x;
+    this.xCoordinate = pos.xCoordinate;
     this.y = pos.y;
     this.vx = vel.x;
     this.vy = vel.y;

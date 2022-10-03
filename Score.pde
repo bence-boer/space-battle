@@ -1,12 +1,12 @@
 class Scoreboard{
-  ArrayList <Integer> scoreList;
+  LinkedList <Integer> scoreList;
   int score;
   int highscore;
-  float pos;
+  float offset;
   
   Scoreboard(){
-    scoreList = new ArrayList<Integer>();
-    pos = 0;
+    scoreList = new LinkedList<Integer>();
+    offset = 0;
   }
   
   void display(){

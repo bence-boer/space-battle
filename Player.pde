@@ -1,35 +1,35 @@
 class Spacecraft{
   PImage ship = loadImage("ship.png");
   PImage[] healthBar = new PImage[4];
-  float x, y;
+  float xCoordinate, yCoordinate;
   int hp;
   int bulletDamage;
   int prevHp;
   int cannonLevel;
   int shootingFrequency;
   
-  Spacecraft(float x, float y){
+  Spacecraft(float xCoordinate, float yCoordinate){
     for(int i = 0; i < healthBar.length; i++){
       healthBar[i] = loadImage("healthbar0"+(i+1)+".png");
     }
-    this.x = x;
-    this.y = y;
-    hp = 0;
-    bulletDamage = 1;
-    cannonLevel = 1;
-    shootingFrequency = 8;
+    this.xCoordinate = xCoordinate;
+    this.yCoordinate = yCoordinate;
+    this.hp = 0;
+    this.bulletDamage = 1;
+    this.cannonLevel = 1;
+    this.shootingFrequency = 8;
   }
   
   void move(float deltaX, float deltaY){
-    float newX = x + deltaX;
-    float newY = y + deltaY;
+    float newX = xCoordinate + deltaX;
+    float newY = yCoordinate + deltaY;
     
     x = constrain(newX, unit/2, width-unit/2);
     y = constrain(newY, unit, height-unit/2);
   }
   
   void display(){
-    image(ship, x, y, unit, unit);
+    image(ship, xCoordinate, yCoordinate, unit, unit);
   }
   
   void upgrade(){
@@ -51,7 +51,7 @@ class Spacecraft{
   }
   
   void displayHealth(){
-    if(hp > 0) image(healthBar[4-hp], x, y+unit*0.75, unit*1.5, unit*1.5);
+    if(hp > 0) image(healthBar[4 - hp], xCoordinate, yCoordinate + unit * 0.75, unit * 1.5, unit * 1.5);
   }
   
   void testIfHit(){
@@ -74,8 +74,8 @@ class Spacecraft{
   }
   
   boolean collidedWith(OpponentController.Opponent o){
-    if(o.pos.x + unit/2 > x - unit/2 && o.pos.x - unit/2 < x + unit/2 &&
-       o.pos.y + unit/2 > y - unit/2 && o.pos.y - unit/2 < y + unit/2){
+    if(o.pos.xCoordinate + unit / 2 > xCoordinate - unit / 2 && o.pos.xCoordinate - unit / 2 < xCoordinate + unit / 2 &&
+       o.pos.yCoordinate + unit / 2 > yCoordinate - unit / 2 && o.pos.yCoordinate - unit / 2 < yCoordinate + unit / 2){
          return true;
        }
     return false;
@@ -84,15 +84,15 @@ class Spacecraft{
   void shoot(){
     switch(cannonLevel){
       case 1:
-      Bullet b1 = new Bullet(new PVector(x, player.y-unit/4), projectiles.startVel, bulletDamage);
+      Bullet b1 = new Bullet(new PVector(xCoordinate, player.yCoordinate - unit / 4), projectiles.startVelocity, bulletDamage);
       
       projectiles.bullets.add(b1);
       projectiles.playerBullets.add(b1);
       break;
       
       case 2:
-      Bullet b2 = new Bullet(new PVector(x-unit/4, player.y-unit/4), projectiles.startVel, bulletDamage);
-      Bullet b3 = new Bullet(new PVector(x+unit/4, player.y-unit/4), projectiles.startVel, bulletDamage);
+      Bullet b2 = new Bullet(new PVector(xCoordinate - unit / 4, player.yCoordinate - unit / 4), projectiles.startVelocity, bulletDamage);
+      Bullet b3 = new Bullet(new PVector(xCoordinate + unit / 4, player.yCoordinate - unit / 4), projectiles.startVelocity, bulletDamage);
         
       projectiles.bullets.add(b2);
       projectiles.playerBullets.add(b2);
@@ -101,9 +101,9 @@ class Spacecraft{
       break;
         
       case 3:
-      Bullet b4 = new Bullet(new PVector(x+unit/8, y-unit/4), projectiles.startVel.copy().rotate(PI*0.05), bulletDamage);
-      Bullet b5 = new Bullet(new PVector(x, y-unit/4), projectiles.startVel, bulletDamage);
-      Bullet b6 = new Bullet(new PVector(x-unit/8, y-unit/4), projectiles.startVel.copy().rotate(-PI*0.05), bulletDamage);
+      Bullet b4 = new Bullet(new PVector(xCoordinate + unit / 8, yCoordinate - unit / 4), projectiles.startVelocity.copy().rotate(PI * 0.05), bulletDamage);
+      Bullet b5 = new Bullet(new PVector(xCoordinate, yCoordinate - unit / 4), projectiles.startVelocity, bulletDamage);
+      Bullet b6 = new Bullet(new PVector(xCoordinate - unit / 8, yCoordinate - unit / 4), projectiles.startVelocity.copy().rotate(-PI * 0.05), bulletDamage);
         
       projectiles.bullets.add(b4);
       projectiles.playerBullets.add(b4);
@@ -114,10 +114,10 @@ class Spacecraft{
       break;
       
       case 4:
-      Bullet b7 = new Bullet(new PVector(x-unit/4, y-unit/4), projectiles.startVel, bulletDamage);
-      Bullet b8 = new Bullet(new PVector(x+unit/8, y-unit/4), projectiles.startVel, bulletDamage);
-      Bullet b9 = new Bullet(new PVector(x-unit/8, y-unit/4), projectiles.startVel, bulletDamage);
-      Bullet b10 = new Bullet(new PVector(x+unit/4, y-unit/4), projectiles.startVel, bulletDamage);
+      Bullet b7 = new Bullet(new PVector(xCoordinate - unit / 4, yCoordinate - unit / 4), projectiles.startVelocity, bulletDamage);
+      Bullet b8 = new Bullet(new PVector(xCoordinate + unit / 8, yCoordinate - unit / 4), projectiles.startVelocity, bulletDamage);
+      Bullet b9 = new Bullet(new PVector(xCoordinate - unit / 8, yCoordinate - unit / 4), projectiles.startVelocity, bulletDamage);
+      Bullet b10 = new Bullet(new PVector(xCoordinate + unit / 4, yCoordinate - unit / 4), projectiles.startVelocity, bulletDamage);
         
      
       projectiles.bullets.add(b7);

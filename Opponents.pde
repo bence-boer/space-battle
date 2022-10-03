@@ -2,7 +2,7 @@ class OpponentController{
   PImage healthBar[] = new PImage[8];
   PImage ship = loadImage("enemy1.png");
   PImage ship02 = loadImage("enemy02.png");
-  float startVel;
+  float startVelocity;
   int spawnSpeed;
   int health;
   ArrayList<Opponent> ships;
@@ -11,7 +11,7 @@ class OpponentController{
     for(int i = 0; i < healthBar.length; i++){
       healthBar[i] = loadImage("enemy_health_bar_0"+(i+1)+".png");
     }
-    startVel = height/100;
+    startVelocity = height/100;
     spawnSpeed = 15;
     health = 2;
     ships = new ArrayList<Opponent>();
@@ -28,9 +28,9 @@ class OpponentController{
     int choice = (int)random(1,10);
     PVector pos = new PVector(rnd, -unit);
     if(choice > 7){
-      ships.add(new Shooter(pos, new PVector(0, startVel).setMag(startVel), health-1));
+      ships.add(new Shooter(pos, new PVector(0, startVelocity).setMag(startVelocity), health-1));
     }
-    else ships.add(new Opponent(pos, new PVector(player.x, player.y).sub(new PVector(rnd, -unit)).setMag(startVel), health));
+    else ships.add(new Opponent(pos, new PVector(player.x, player.y).sub(new PVector(rnd, -unit)).setMag(startVelocity), health));
   }
 
   class Opponent{
@@ -98,7 +98,7 @@ class OpponentController{
     void die(){
       explosions.addExplosion(pos);
       scoreboard.scored();
-      enemies.startVel += height/5000;
+      enemies.startVelocity += height/5000;
       enemies.ships.remove(this);
     }
   }
