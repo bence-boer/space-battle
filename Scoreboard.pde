@@ -15,7 +15,7 @@ class Scoreboard{
     text("Score : " + score, unit/4, unit/2);
   }
   
-  void mainScreen(){
+  void displayMainScreen(){
     background(20);
     
     fill(255);

@@ -51,7 +51,7 @@ class PowerUpController{
     for(int i = 0; i < blastWaves.size(); i++){
       blastWaves.get(i).pos.add(blastWaves.get(i).vel);
       if(blastWaves.get(i).pos.y > height+unit/2 || blastWaves.get(i).pos.y < -unit/2) blastWaves.remove(i);
-      else if(blastWaves.get(i).pos.x > player.x-unit/2 && blastWaves.get(i).pos.x < player.x+unit/2 && blastWaves.get(i).pos.y > player.y-unit/2 && blastWaves.get(i).pos.y < player.y+unit/2){
+      else if(blastWaves.get(i).pos.x > player.coordinate.x-unit/2 && blastWaves.get(i).pos.x < player.coordinate.x+unit/2 && blastWaves.get(i).pos.y > player.coordinate.y-unit/2 && blastWaves.get(i).pos.y < player.coordinate.y+unit/2){
         blastWaves.get(i).vel.y = -startVelocity;
         blastWaves.get(i).detonated = true;
       }
@@ -60,7 +60,7 @@ class PowerUpController{
     for(int i = 0; i < hpBoosts.size(); i++){
       hpBoosts.get(i).pos.add(hpBoosts.get(i).vel);
       if(hpBoosts.get(i).pos.y > height+unit/2) hpBoosts.remove(i);
-      else if(hpBoosts.get(i).pos.x > player.x-unit/2 && hpBoosts.get(i).pos.x < player.x+unit/2 && hpBoosts.get(i).pos.y > player.y-unit/2 && hpBoosts.get(i).pos.y < player.y+unit/2){
+      else if(hpBoosts.get(i).pos.x > player.coordinate.x-unit/2 && hpBoosts.get(i).pos.x < player.coordinate.x+unit/2 && hpBoosts.get(i).pos.y > player.coordinate.y-unit/2 && hpBoosts.get(i).pos.y < player.coordinate.y+unit/2){
         hpBoosts.get(i).activate();
         hpBoosts.remove(i);
       }
@@ -69,10 +69,10 @@ class PowerUpController{
     for(int i = 0; i < cannons.size(); i++){
       cannons.get(i).pos.add(cannons.get(i).vel);
       if(cannons.get(i).pos.y > height+unit/2) cannons.remove(i);
-      else if(cannons.get(i).pos.x > player.x-unit/2 &&
-              cannons.get(i).pos.x < player.x+unit/2 &&
-              cannons.get(i).pos.y > player.y-unit/2 &&
-              cannons.get(i).pos.y < player.y+unit/2){
+      else if(cannons.get(i).pos.x > player.coordinate.x-unit/2 &&
+              cannons.get(i).pos.x < player.coordinate.x+unit/2 &&
+              cannons.get(i).pos.y > player.coordinate.y-unit/2 &&
+              cannons.get(i).pos.y < player.coordinate.y+unit/2){
         cannons.get(i).addCannon();
         cannons.remove(i);
       }
@@ -131,8 +131,10 @@ class BlastWave{
   }
   
   void clearArea(){
+    PVector shipPos = new PVector(0,0);
     for(int i = enemies.ships.size()-1; i >= 0; i--){
-      if(enemies.ships.get(i).pos.dist(pos) < blastRadius+unit/2){
+      shipPos.set(enemies.ships.get(i).coordinate.x, enemies.ships.get(i).coordinate.y);
+      if(shipPos.dist(pos) < blastRadius+unit/2){
         enemies.ships.get(i).die();
       }
     }

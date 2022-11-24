@@ -1,4 +1,5 @@
 import java.util.LinkedList;
+import java.util.Iterator;
 
 Spacecraft player;
 Scoreboard scoreboard = new Scoreboard();
@@ -27,7 +28,7 @@ void setup(){
   textSize(70);
   textAlign(LEFT, CENTER);
   // vibratorSetup();
-    Window.initialize(width, height);
+  Window.initialize(width, height);
   frameCount = 0;
   unit = width/6;
   scoreboard.score = 0;
@@ -75,7 +76,7 @@ void draw(){
     topBar();
     scoreboard.display();
   }
-  else scoreboard.mainScreen(); 
+  else scoreboard.displayMainScreen(); 
 }
 
 void spaceBackground(){
@@ -114,63 +115,6 @@ void topBar(){
   stroke(150);
   line(0, unit, width, unit);
   popStyle();
-}
-
-void mousePressed(){
-  if(player.hp <= 0) mp = true;
-}
-
-void mouseDragged(){
-  if(player.isAlive()) player.move(mouseX-pmouseX, mouseY-pmouseY);
-}
-
-void mouseReleased(){
-  if(player.hp <= 0 && mp) player.hp = 4;
-}
-
-void touchStarted(){
-  /*if(touches.length == 2){
-    //player.upgrade();
-    scoreboard.score += 10;
-  }*/
-}
-
-public enum Input{
-  LEFT, RIGHT, UP, DOWN, SHOOT;
-
-  public static boolean isPressed(int key, int keyCode){
-    switch(this){
-      case LEFT:
-        return key == 'a' || key == 'A' || key == CODED && keyCode == LEFT;
-      case RIGHT:
-        return key == 'd' || key == 'D' || key == CODED && keyCode == RIGHT;
-      case UP:
-        return key == 'w' || key == 'W' || key == CODED && keyCode == UP;
-      case DOWN:
-        return key == 's' || key == 'S' || key == CODED && keyCode == DOWN;
-      case SHOOT:
-        return key == ' ' || key == ' ' || key == CODED && keyCode == SHIFT;
-      default:
-        return false;
-    }
-  }
-
-  public boolean isReleased(){
-    switch(this){
-      case LEFT:
-        return key != 'a' && key != 'A' && key != CODED && keyCode != LEFT;
-      case RIGHT:
-        return key != 'd' && key != 'D' && key != CODED && keyCode != RIGHT;
-      case UP:
-        return key != 'w' && key != 'W' && key != CODED && keyCode != UP;
-      case DOWN:
-        return key != 's' && key != 'S' && key != CODED && keyCode != DOWN;
-      case SHOOT:
-        return key != ' ' && key != ' ' && key != CODED && keyCode != SHIFT;
-      default:
-        return false;
-    }
-  }
 }
 
 public static class Window{

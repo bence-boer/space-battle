@@ -29,13 +29,9 @@ class Bullet extends Entity{
   PImage bullet;
   int damage;
   
-  Bullet(float xCoordinate, float yCoordinate, float xVelocity, float yVelocity, int damage){
-    super(xCoordinate, yCoordinate, unit, unit);
-    this.bullet = projectiles.playerBullet;
-    this.xCoordinate = xCoordinate;
-    this.yCoordinate = yCoordinate;
-    this.xVelocity = xVelocity;
-    this.yVelocity = yVelocity;
+  Bullet(Coordinate coordinate, Velocity velocity, int damage){
+    super(coordinate, velocity);
+    this.bullet = projectiles.playerBullet.copy();
     this.damage = damage;
   }
   
@@ -45,29 +41,32 @@ class Bullet extends Entity{
   }
   
   void move(){
-    xCoordinate += xVelocity;
-    yCoordinate += yVelocity;
+    coordinate.add(velocity);
     if(isOut()) projectiles.bullets.remove(this);
   }
   
   void display(){
-    image(bullet, xCoordinate, yCoordinate, unit, unit);
+    image(bullet, coordinate.x, coordinates.y, unit, unit);
   }
   
   boolean isOut(){
-    return yCoordinate < -unit || yCoordinate > height + unit;
+    return coordinates.y < -unit || coordinates.y > height + unit;
+  }
+  
+  public Bullet copy(){
+    return new Bullet(coordinates, velocity, damage);
   }
 }
 
 class EnemyBullet extends Bullet{
   
-  EnemyBullet(float xCoordinate, float yCoordinate, float xVelocity, float yVelocity, int damage){
-    super(xCoordinate, yCoordinate, xVelocity, yVelocity, damage);
+  EnemyBullet(float coordinate.x, float coordinates.y, float xVelocity, float yVelocity, int damage){
+    super(coordinate.x, coordinates.y, xVelocity, yVelocity, damage);
     this.bullet = projectiles.enemyBullet;
   }
   
   boolean hit(Spacecraft p){
-    return yCoordinate > p.yCoordinate - unit / 2 && yCoordinate < p.yCoordinate + unit / 2 &&
-           xCoordinate > p.xCoordinate - unit / 2 && xCoordinate < p.xCoordinate + unit / 2;     
+    return coordinates.y > p.coordinates.y - unit / 2 && coordinates.y < p.coordinates.y + unit / 2 &&
+           coordinate.x > p.coordinate.x - unit / 2 && coordinate.x < p.coordinate.x + unit / 2;     
   }
 }

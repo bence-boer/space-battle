@@ -1,58 +1,66 @@
 class ExplosionController{
-  LinkedList<Explosion> explosions;
+  private final LinkedList<Explosion> explosions;
   
-  ExplosionController(){
+  public ExplosionController(){
     explosions = new LinkedList<Explosion>();
   }
   
-  void addExplosion(float xCoordinate, float yCoordinate){
-    explosions.add(new Explosion(xCoordinate, yCoordinate));
+  public void addExplosion(Coordinate coordinates){
+    explosions.add(new Explosion(coordinates));
   }
   
   void damage(){
     
   }
   
-  void display(){
-    for(int i = explosions.size()-1; i >= 0; i--){
-      explosions.get(i).display();
-      if(explosions.get(i).hitPlayer()){
+  public void display(){
+    Iterator<Explosion> iterator = explosions.iterator();
+    while(iterator.hasNext()){
+      Explosion explosion = iterator.next();
+      explosion.display();
+      
+      if(explosion.hitPlayer()){
         player.hp--;
-        explosions.remove(i);
+        iterator.remove();
       }
-      else if(explosions.get(i).phase == 6) explosions.remove(i);
+      else if(explosion.isFinished()){
+        iterator.remove();
+      }
     }
   }
 }
 
 class Explosion extends Entity{
-  int phase;
+  private int phase = 0;
+  private final int finalPhase = 6;
   
-  PImage phase01 = loadImage("blast01.png");
-  PImage phase02 = loadImage("blast02.png");
-  PImage phase03 = loadImage("blast03.png");
+  private PImage phase01 = loadImage("blast01.png");
+  private PImage phase02 = loadImage("blast02.png");
+  private PImage phase03 = loadImage("blast03.png");
   
-  Explosion(float xCoordinate, float yCoordinate){
-    super(xCoordinate, yCoordinate);
-    phase = 1;
+  public Explosion(float coordinates){
+    super(coordinates);
   }
   
-  void display(){
+  public void display(){
     if(phase <= 2){
-      image(phase01, xCoordinate, yCoordinate, unit, unit);
+      image(phase01, coordinates.x, coordinates.y, unit, unit);
     }
     else if(phase <= 4){
-      image(phase02, xCoordinate, yCoordinate, unit, unit);
+      image(phase02, coordinates.x, coordinates.y, unit, unit);
     }
     else if(phase <= 6){
-      image(phase03, xCoordinate, yCoordinate, unit, unit);
+      image(phase03, coordinates.x, coordinates.y, unit, unit);
     }
-    
     phase++;
   }
   
-  boolean hitPlayer(){
-    return xCoordinate > player.xCoordinate - unit / 2 && xCoordinate < player.xCoordinate + unit / 2 &&
-           yCoordinate > player.yCoordinate - unit / 2 && yCoordinate < player.yCoordinate + unit / 2;
+  public boolean hitPlayer(){
+    return coordinates.x > player.coordinates.x - unit / 2 && coordinates.x < player.coordinates.x + unit / 2 &&
+           coordinates.y > player.coordinates.y - unit / 2 && coordinates.y < player.coordinates.y + unit / 2;
+  }
+
+  public boolean isFinished(){
+    return phase >= finalPhase;
   }
 }
